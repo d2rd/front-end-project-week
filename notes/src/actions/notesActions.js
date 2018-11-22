@@ -6,6 +6,7 @@ export const ERROR = "ERROR"
 // added Nov 21
 export const CREATING_NOTE = "CREATING_NOTE"
 export const CREATE_NOTE = "CREATE_NOTE"
+export const GETTING_NOTES = "GETTING_NOTES"
 
 // might need these also
 // UPDATING_NOTE
@@ -33,7 +34,27 @@ const URL = 'http://localhost:5000/notes';
 // }
 
 // GET REFACTORED NOV-21
-
+export const getNotes = () => {
+  const notes = axios.get(`${URL}/get`); // ?? USE `notes` ??
+  return dispatch => {
+    dispatch({
+      type: GETTING_NOTES
+    });
+    notes
+      .then(response => {
+        dispatch({
+          type: GET_NOTES,
+          payload: response.data
+        });
+      })
+      .catch(err => {
+        dispatch({
+          type: ERROR,
+          payload: err
+        });
+      });
+  };
+};
 
 
 // POST
@@ -49,6 +70,7 @@ const URL = 'http://localhost:5000/notes';
 //       })
 //   }
 // }
+
 // POST REFACTORED NOV-21
 export const createNote = note => {
   const newNote = axios.post(`${URL}/create`, note);
